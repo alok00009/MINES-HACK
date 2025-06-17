@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>X-GOKU | Mines Predictor</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: url('moon_goku_bg.jpg') no-repeat center center fixed;
+      background-size: cover;
+      color: white;
+      text-align: center;
+    }
+    .logo {
+      width: 120px;
+      margin-top: 20px;
+    }
+    h1 {
+      font-size: 32px;
+      margin: 10px 0;
+      color: #fff;
+    }
+    select, button {
+      font-size: 18px;
+      padding: 8px;
+      margin: 10px 5px;
+      border-radius: 5px;
+      border: none;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(5, 60px);
+      gap: 10px;
+      justify-content: center;
+      margin-top: 20px;
+    }
+    .cell {
+      width: 60px;
+      height: 60px;
+      background-color: #222;
+      border-radius: 8px;
+      line-height: 60px;
+      font-size: 20px;
+      font-weight: bold;
+    }
+    .safe {
+      background-color: #00c853;
+    }
+  </style>
+</head>
+<body>
+  <img src="light_blue_goku.jpg" alt="Logo" class="logo" />
+  <h1>X-GOKU</h1>
+
+  <div>
+    <label>Select Mines: </label>
+    <select id="minesSelect"></select>
+    <button onclick="generateSafeTiles()">Predict</button>
+  </div>
+
+  <div class="grid" id="minesGrid"></div>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const select = document.getElementById("minesSelect");
+      for (let i = 1; i <= 24; i++) {
+        const option = document.createElement("option");
+        option.value = i;
+        option.textContent = i;
+        select.appendChild(option);
+      }
+    });
+
+    function generateSafeTiles() {
+      const grid = document.getElementById('minesGrid');
+      grid.innerHTML = '';
+      const mines = parseInt(document.getElementById('minesSelect').value);
+      const safeCount = mines <= 4 ? 3 : mines <= 15 ? 2 : 1;
+      const safeTiles = [];
+
+      while (safeTiles.length < safeCount) {
+        let r = Math.floor(Math.random() * 25);
+        if (!safeTiles.includes(r)) safeTiles.push(r);
+      }
+
+      for (let i = 0; i < 25; i++) {
+        const cell = document.createElement('div');
+        cell.className = 'cell' + (safeTiles.includes(i) ? ' safe' : '');
+        cell.textContent = i + 1;
+        grid.appendChild(cell);
+      }
+    }
+  </script>
+</body>
+</html>
